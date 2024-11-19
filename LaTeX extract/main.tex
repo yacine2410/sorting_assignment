@@ -1,0 +1,1278 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{main}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{algorithmes-complexituxe9-affectation-tri}{%
+\section{Algorithmes \& Complexité Affectation :
+Tri}\label{algorithmes-complexituxe9-affectation-tri}}
+
+Ce Notebook traite des différents algorithmes de tri dans le cadre du
+d'algorithmique et de complexité.
+
+En informatique, les algorithmes de tri permettent de mettre en ordre
+les éléments d'une liste. Un tri efficace est important pour optimiser
+l'efficacité d'algorithmes tels que la recherche, la fusion et
+l'agrégation. La sortie doit être une permutation monotone, c'est-à-dire
+qu'elle doit respecter le type d'ordre spécifié et conserver tous les
+éléments d'origine.
+
+Vers 1951, Betty Holberton faisait partie des auteurs des premiers
+algorithmes de tri travaillant sur l'ENIAC, le premier ordinateur
+électronique programmable à usage général achevé en 1945. Bubble Sort,
+un algorithme de tri dont la complexité temporelle est O(n²), a été
+analysé dès 1956. De nouveaux algorithmes sont encore inventés, comme
+Timsort en 2002. Les algorithmes de tri sont très étudiés dans les cours
+d'introduction à l'informatique car ils introduisent des concepts tels
+que la notation big O, les algorithmes de division et de conquête, la
+récursion, les tas, les arbres binaires, la complexité dans le meilleur,
+le pire et la moyenne des cas\ldots etc.
+
+Dans ce document, nous allons explorer quelques algorithmes de tri en
+pseudo-code, puis tester chaque algorithme avec des tableaux aléatoires
+de tailles allant de 10 à 20 000 entiers. Nous utilisons une série de
+tableaux aléatoires afin de pouvoir tracer la complexité temporelle de
+chaque algorithme. L'utilisation de la même longueur de tableau nous
+permettra de faire des comparaisons.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{94}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{random}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np} 
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{math} 
+\PY{k+kn}{import} \PY{n+nn}{time}
+
+\PY{c+c1}{\PYZsh{}Create a list of random integers of length n}
+\PY{k}{def} \PY{n+nf}{createRandomList}\PY{p}{(}\PY{n}{n}\PY{p}{:} \PY{n+nb}{int}\PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{\PYZgt{}} \PY{n+nb}{list}\PY{p}{:}
+    \PY{n}{random\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{n}\PY{p}{)}\PY{p}{:}
+        \PY{n}{random\PYZus{}list}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1000}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{random\PYZus{}list}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{tri-de-suxe9lection}{%
+\subsubsection{Tri de sélection :}\label{tri-de-suxe9lection}}
+
+Commençons par mettre en œuvre l'algorithme de tri par sélection :
+
+Le tri par sélection trie le tableau en sélectionnant de manière répétée
+le plus petit (ou le plus grand) élément de la partie non triée et en
+l'échangeant avec le premier élément non trié. Ce processus est itératif
+jusqu'à ce que le tableau soit trié comme suit :
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Commencer avec le premier élément comme position initiale
+\item
+  Trouver le plus petit élément dans la partie non triée du tableau.
+\item
+  Échanger ce plus petit élément avec le premier élément non trié
+\item
+  Déplacer la limite de la partie triée d'un élément vers l'avant
+\item
+  Répéter les étapes 2 à 4 pour les éléments non triés restants jusqu'à
+  ce que le tableau soit trié.
+\end{enumerate}
+
+Étant donné que nous avons deux boucles imbriquées, cet algorithme a une
+complexité de O(n²) et n'utilise qu'une seule variable supplémentaire,
+ce qui lui confère un espace auxiliaire de O(1). Il ne conserve pas
+l'ordre relatif des éléments égaux.
+
+    FUNCTION selectionSort(arr): n = LENGTH(arr) // Get the length of the
+array
+
+\begin{verbatim}
+FOR i FROM 0 TO n - 1 DO:
+    minIndex = i                 // Pointer for the beginning of the unsorted section
+    tmpIndex = minIndex          // Temporary pointer for the minimum value index we find
+
+    // Find the index of the minimum value in the unsorted section
+    FOR j FROM i TO n - 1 DO:
+        IF arr[j] < arr[tmpIndex] THEN:
+            tmpIndex = j         // Update tmpIndex if a smaller value is found
+
+    // Reassign values if minIndex is different than tmpIndex
+    IF minIndex != tmpIndex THEN:
+        SWAP arr[tmpIndex] WITH arr[minIndex]  // Swap the found minimum value with the first unsorted element
+\end{verbatim}
+
+END FUNCTION
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{95}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Selection sort implemented in ascending order}
+
+\PY{k}{def} \PY{n+nf}{selectionSort}\PY{p}{(}\PY{n}{arr}\PY{p}{)}\PY{p}{:}
+    \PY{n}{n} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{arr}\PY{p}{)}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{:}
+        \PY{n}{minIndex} \PY{o}{=} \PY{n}{i} \PY{c+c1}{\PYZsh{}pointer for beginning of unsorted section}
+        \PY{n}{tmpIndex} \PY{o}{=} \PY{n}{minIndex} \PY{c+c1}{\PYZsh{}temporary pointer for the minimum value index we find}
+
+        \PY{c+c1}{\PYZsh{}find the index of the minimum value in the unsorted section}
+        \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{n}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{n}{arr}\PY{p}{[}\PY{n}{j}\PY{p}{]} \PY{o}{\PYZlt{}} \PY{n}{arr}\PY{p}{[}\PY{n}{tmpIndex}\PY{p}{]}\PY{p}{:}
+                \PY{n}{tmpIndex} \PY{o}{=} \PY{n}{j}
+
+        \PY{c+c1}{\PYZsh{}reassign values if minIndex is different than tmpIndex}
+        \PY{k}{if} \PY{n}{minIndex} \PY{o}{!=} \PY{n}{tmpIndex}\PY{p}{:}
+            \PY{n}{arr}\PY{p}{[}\PY{n}{tmpIndex}\PY{p}{]}\PY{p}{,} \PY{n}{arr}\PY{p}{[}\PY{n}{minIndex}\PY{p}{]} \PY{o}{=} \PY{n}{arr}\PY{p}{[}\PY{n}{minIndex}\PY{p}{]}\PY{p}{,} \PY{n}{arr}\PY{p}{[}\PY{n}{tmpIndex}\PY{p}{]}
+
+            
+
+\PY{n}{input\PYZus{}sizes} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{20001}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{execution\PYZus{}times} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{size} \PY{o+ow}{in} \PY{n}{input\PYZus{}sizes}\PY{p}{:}
+    \PY{n}{test\PYZus{}list} \PY{o}{=} \PY{n}{createRandomList}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{)}
+    \PY{n}{start\PYZus{}time} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+    \PY{n}{selectionSort}\PY{p}{(}\PY{n}{test\PYZus{}list}\PY{p}{)}
+    \PY{n}{end\PYZus{}time} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+    \PY{n}{execution\PYZus{}times}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{end\PYZus{}time} \PY{o}{\PYZhy{}} \PY{n}{start\PYZus{}time}\PY{p}{)}
+
+
+\PY{c+c1}{\PYZsh{} Plot Measured Times and Complexities}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{input\PYZus{}sizes}\PY{p}{,} \PY{n}{execution\PYZus{}times}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Selection Sort}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Customize Plot}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Time Complexity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Input Size (n)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Execution Time}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_4_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{tri-rapide}{%
+\subsubsection{Tri rapide}\label{tri-rapide}}
+
+Essayons un algorithme de tri plus rapide et moins complexe en termes de
+temps. Pour cette partie, examinons le tri rapide :
+
+QuickSort est un algorithme de tri basé sur le principe Diviser pour
+régner, qui choisit un élément comme pivot et partitionne le tableau
+donné autour du pivot choisi en plaçant le pivot à sa position correcte
+dans le tableau trié.
+
+L'algorithme comporte principalement trois étapes : 1. Choisir un pivot
+2. Partitionner le tableau autour du pivot. Après la partition, on
+s'assure que tous les éléments sont plus petits que tous les éléments de
+droite et on obtient l'index du point final des éléments les plus
+petits. La gauche et la droite peuvent ne pas être triées
+individuellement. 3. Appeler récursivement les deux sous-ensembles
+gauche et droit partitionnés. 4. Nous arrêtons la récursivité lorsqu'il
+ne reste plus qu'un seul élément.
+
+\textbf{Complexité temporelle - Meilleur cas:} Ω(N log N) - Atteint
+lorsque le pivot divise le tableau en deux moitiés égales. - Cas
+moyen:** θ(N log N) - Donne généralement de bons résultats dans la
+pratique. - Cas le plus défavorable:** O(N²) - Se produit en cas de
+partitions déséquilibrées, par exemple lorsque le tableau est déjà trié
+et que le pivot le plus défavorable est choisi. Les stratégies
+d'atténuation comprennent l'utilisation de techniques telles que la
+médiane des trois et les algorithmes aléatoires.
+
+**Avantages - Efficace pour les grands ensembles de données grâce à une
+faible surcharge. - Adapté à la mémoire cache car il trie en place sans
+tableaux supplémentaires. - Algorithme de tri polyvalent le plus rapide
+lorsque la stabilité n'est pas requise. - Récursif à la queue, ce qui
+permet d'optimiser les appels à la queue.
+
+**Inconvénients - Mauvaise complexité temporelle dans le pire des cas
+(O(N²)) si les pivots sont mal choisis. - N'est pas idéal pour les
+petits ensembles de données. - N'est pas stable ; l'ordre relatif des
+éléments égaux peut ne pas être préservé.
+
+    FUNCTION partition(array, low, high): pivot = array{[}high{]} // Choose
+the last element as pivot i = low - 1 // Pointer for the smaller element
+
+\begin{verbatim}
+// Iterate through the array
+FOR j FROM low TO high - 1 DO:
+    IF array[j] < pivot THEN:
+        i = i + 1                 // Increment index of smaller element
+        SWAP array[i] WITH array[j] // Swap current element with the element at index i
+
+SWAP array[i + 1] WITH array[high] // Move pivot to its correct position
+RETURN i + 1                      // Return the partitioning index
+\end{verbatim}
+
+FUNCTION quickSort(array, low = None, high = None):
+
+\begin{verbatim}
+IF low IS None THEN:
+    low = 0                       // Initialize low if not provided
+IF high IS None THEN:
+    high = LENGTH(array) - 1      // Initialize high if not provided
+
+IF low < high THEN:
+    pi = partition(array, low, high) // Partition the array
+    quickSort(array, low, pi - 1   // Recursively sort elements before partition
+    quickSort(array, pi + 1, high) // Recursively sort elements after partition
+\end{verbatim}
+
+END FUNCTION
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{96}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{partition}\PY{p}{(}\PY{n}{array}\PY{p}{,} \PY{n}{low}\PY{p}{,} \PY{n}{high}\PY{p}{)}\PY{p}{:}
+    \PY{n}{pivot} \PY{o}{=} \PY{n}{array}\PY{p}{[}\PY{n}{high}\PY{p}{]}
+    \PY{n}{i} \PY{o}{=} \PY{n}{low} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}
+    \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{low}\PY{p}{,} \PY{n}{high}\PY{p}{)}\PY{p}{:}
+        \PY{k}{if} \PY{n}{array}\PY{p}{[}\PY{n}{j}\PY{p}{]} \PY{o}{\PYZlt{}} \PY{n}{pivot}\PY{p}{:}
+            \PY{n}{i} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+            \PY{n}{array}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,} \PY{n}{array}\PY{p}{[}\PY{n}{j}\PY{p}{]} \PY{o}{=} \PY{n}{array}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{,} \PY{n}{array}\PY{p}{[}\PY{n}{i}\PY{p}{]}
+    \PY{n}{array}\PY{p}{[}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{array}\PY{p}{[}\PY{n}{high}\PY{p}{]} \PY{o}{=} \PY{n}{array}\PY{p}{[}\PY{n}{high}\PY{p}{]}\PY{p}{,} \PY{n}{array}\PY{p}{[}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}
+    \PY{k}{return} \PY{n}{i} \PY{o}{+} \PY{l+m+mi}{1}
+
+\PY{k}{def} \PY{n+nf}{quickSort}\PY{p}{(}\PY{n}{array}\PY{p}{,} \PY{n}{low} \PY{o}{=} \PY{k+kc}{None}\PY{p}{,} \PY{n}{high} \PY{o}{=} \PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+    \PY{k}{if} \PY{n}{low} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:} 
+        \PY{n}{low} \PY{o}{=} \PY{l+m+mi}{0} 
+    \PY{k}{if} \PY{n}{high} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:} 
+        \PY{n}{high} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{array}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1} 
+    \PY{k}{if} \PY{n}{low} \PY{o}{\PYZlt{}} \PY{n}{high}\PY{p}{:}
+        \PY{n}{pi} \PY{o}{=} \PY{n}{partition}\PY{p}{(}\PY{n}{array}\PY{p}{,} \PY{n}{low}\PY{p}{,} \PY{n}{high}\PY{p}{)}
+        \PY{n}{quickSort}\PY{p}{(}\PY{n}{array}\PY{p}{,} \PY{n}{low}\PY{p}{,} \PY{n}{pi} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{quickSort}\PY{p}{(}\PY{n}{array}\PY{p}{,} \PY{n}{pi} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{high}\PY{p}{)}
+
+\PY{n}{input\PYZus{}sizes} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{20001}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{execution\PYZus{}times} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{size} \PY{o+ow}{in} \PY{n}{input\PYZus{}sizes}\PY{p}{:}
+    \PY{n}{test\PYZus{}list} \PY{o}{=} \PY{n}{createRandomList}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{)}
+    \PY{n}{start\PYZus{}time} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+    \PY{n}{quickSort}\PY{p}{(}\PY{n}{test\PYZus{}list}\PY{p}{)}
+    \PY{n}{end\PYZus{}time} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+    \PY{n}{execution\PYZus{}times}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{end\PYZus{}time} \PY{o}{\PYZhy{}} \PY{n}{start\PYZus{}time}\PY{p}{)}
+
+
+\PY{c+c1}{\PYZsh{} Plot Measured Times and Complexities}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{input\PYZus{}sizes}\PY{p}{,} \PY{n}{execution\PYZus{}times}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Quick Sort}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Customize Plot}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Time Complexity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Input Size (n)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Execution Time}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)} 
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_7_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{tri-par-fusion}{%
+\subsubsection{Tri par fusion :}\label{tri-par-fusion}}
+
+Le tri par fusion est un autre algorithme « diviser pour régner » comme
+le tri rapide. Il divise récursivement le tableau d'entrée en
+sous-ensembles plus petits et trie ces sous-ensembles avant de les
+fusionner à nouveau pour obtenir le tableau trié. Sa durée d'exécution
+est de O(n * Log(n)), ce qui est optimal pour les algorithmes basés sur
+la comparaison.
+
+Voici les étapes :
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Diviser : Diviser la liste ou le tableau récursivement en deux moitiés
+  jusqu'à ce qu'il ne soit plus possible de le diviser.
+\item
+  Conquérir : chaque sous-réseau est trié individuellement à l'aide de
+  l'algorithme de tri par fusion.
+\item
+  Fusionner : Les sous-réseaux triés sont à nouveau fusionnés dans
+  l'ordre trié. Le processus se poursuit jusqu'à ce que tous les
+  éléments des deux sous-réseaux aient été fusionnés.
+\end{enumerate}
+
+En pratique, de manière récursive, cela fonctionnerait comme suit :
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Diviser le tableau en deux
+\item
+  Appeler le tri par fusion sur chaque moitié pour les trier
+  récursivement
+\item
+  Fusionner les deux moitiés en un seul tableau trié
+\end{enumerate}
+
+    FUNCTION mergeSort(arr): IF LENGTH(arr) \textgreater{} 1 THEN: // Split
+the array into two halves left\_array = arr{[}0 : LENGTH(arr) // 2{]} //
+Left half right\_array = arr{[}LENGTH(arr) // 2 : {]} // Right half
+
+\begin{verbatim}
+    // Recursively sort both halves
+    mergeSort(left_array)
+    mergeSort(right_array)
+
+    i = 0  // Index for left array
+    j = 0  // Index for right array
+    k = 0  // Index for merged array
+
+    // Merge the two halves in sorted order
+    WHILE i < LENGTH(left_array) AND j < LENGTH(right_array) DO:
+        IF left_array[i] < right_array[j] THEN:
+            arr[k] = left_array[i]          // Add element from left array
+            i = i + 1                        // Move to the next element in left array
+        ELSE:
+            arr[k] = right_array[j]         // Add element from right array
+            j = j + 1                        // Move to the next element in right array
+        k = k + 1                            // Move to the next position in merged array
+
+    // Add remaining elements from left_array, if any
+    WHILE i < LENGTH(left_array) DO:
+        arr[k] = left_array[i]
+        i = i + 1
+        k = k + 1
+
+    // Add remaining elements from right_array, if any
+    WHILE j < LENGTH(right_array) DO:
+        arr[k] = right_array[j]
+        j = j + 1
+        k = k + 1
+\end{verbatim}
+
+END FUNCTION
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{97}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{mergeSort}\PY{p}{(}\PY{n}{arr}\PY{p}{)}\PY{p}{:}
+    \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{arr}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+m+mi}{1}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{}Split Arrays}
+        \PY{n}{left\PYZus{}array} \PY{o}{=} \PY{n}{arr}\PY{p}{[}\PY{p}{:}\PY{n+nb}{len}\PY{p}{(}\PY{n}{arr}\PY{p}{)}\PY{o}{/}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{]}
+        \PY{n}{right\PYZus{}array} \PY{o}{=} \PY{n}{arr}\PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{arr}\PY{p}{)}\PY{o}{/}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{:}\PY{p}{]}
+        
+        \PY{c+c1}{\PYZsh{}recursively further split the arrays}
+        \PY{n}{mergeSort}\PY{p}{(}\PY{n}{left\PYZus{}array}\PY{p}{)}
+        \PY{n}{mergeSort}\PY{p}{(}\PY{n}{right\PYZus{}array}\PY{p}{)}
+
+        \PY{n}{i} \PY{o}{=} \PY{l+m+mi}{0} \PY{c+c1}{\PYZsh{}left array index}
+        \PY{n}{j} \PY{o}{=} \PY{l+m+mi}{0} \PY{c+c1}{\PYZsh{}right array index}
+        \PY{n}{k} \PY{o}{=} \PY{l+m+mi}{0} \PY{c+c1}{\PYZsh{}merged array index}
+
+        \PY{c+c1}{\PYZsh{}Merge the arrays in sorted order}
+        \PY{k}{while} \PY{n}{i} \PY{o}{\PYZlt{}} \PY{n+nb}{len}\PY{p}{(}\PY{n}{left\PYZus{}array}\PY{p}{)} \PY{o+ow}{and} \PY{n}{j} \PY{o}{\PYZlt{}} \PY{n+nb}{len}\PY{p}{(}\PY{n}{right\PYZus{}array}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{n}{left\PYZus{}array}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{\PYZlt{}} \PY{n}{right\PYZus{}array}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{:}
+                \PY{n}{arr}\PY{p}{[}\PY{n}{k}\PY{p}{]} \PY{o}{=} \PY{n}{left\PYZus{}array}\PY{p}{[}\PY{n}{i}\PY{p}{]}
+                \PY{n}{i} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+            \PY{k}{else}\PY{p}{:}
+                \PY{n}{arr}\PY{p}{[}\PY{n}{k}\PY{p}{]} \PY{o}{=} \PY{n}{right\PYZus{}array}\PY{p}{[}\PY{n}{j}\PY{p}{]}
+                \PY{n}{j} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+            \PY{n}{k} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+
+        \PY{c+c1}{\PYZsh{}Add remaining elements to the merged array }
+        \PY{k}{while} \PY{n}{i} \PY{o}{\PYZlt{}} \PY{n+nb}{len}\PY{p}{(}\PY{n}{left\PYZus{}array}\PY{p}{)}\PY{p}{:}
+            \PY{n}{arr}\PY{p}{[}\PY{n}{k}\PY{p}{]} \PY{o}{=} \PY{n}{left\PYZus{}array}\PY{p}{[}\PY{n}{i}\PY{p}{]}
+            \PY{n}{i} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+            \PY{n}{k} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+        \PY{k}{while} \PY{n}{j} \PY{o}{\PYZlt{}} \PY{n+nb}{len}\PY{p}{(}\PY{n}{right\PYZus{}array}\PY{p}{)}\PY{p}{:}
+            \PY{n}{arr}\PY{p}{[}\PY{n}{k}\PY{p}{]} \PY{o}{=} \PY{n}{right\PYZus{}array}\PY{p}{[}\PY{n}{j}\PY{p}{]}
+            \PY{n}{j} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+            \PY{n}{k} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+
+\PY{n}{input\PYZus{}sizes} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{20001}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{execution\PYZus{}times} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{size} \PY{o+ow}{in} \PY{n}{input\PYZus{}sizes}\PY{p}{:}
+    \PY{n}{test\PYZus{}list} \PY{o}{=} \PY{n}{createRandomList}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{)}
+    \PY{n}{start\PYZus{}time} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+    \PY{n}{mergeSort}\PY{p}{(}\PY{n}{test\PYZus{}list}\PY{p}{)}
+    \PY{n}{end\PYZus{}time} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+    \PY{n}{execution\PYZus{}times}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{end\PYZus{}time} \PY{o}{\PYZhy{}} \PY{n}{start\PYZus{}time}\PY{p}{)}
+
+
+\PY{c+c1}{\PYZsh{} Plot Measured Times and Complexities}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{input\PYZus{}sizes}\PY{p}{,} \PY{n}{execution\PYZus{}times}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Merge Sort}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Customize Plot}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Time Complexity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Input Size (n)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Execution Time}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)} 
+        
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Pour l'algorithme de tri suivant, je voudrais essayer le tri à bulles,
+qui est l'algorithme de tri le plus simple et qui fonctionne en
+échangeant de manière répétée les éléments adjacents s'ils sont dans le
+mauvais ordre. Cet algorithme n'est pas adapté aux grands ensembles de
+données, car sa complexité temporelle moyenne et dans le pire des cas
+est assez élevée.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Commencez par le premier élément du tableau
+\item
+  Comparer l'élément actuel avec le suivant
+\item
+  Si l'élément courant est plus grand que le suivant, les échanger
+\item
+  incrémenter l'index et répéter
+\item
+  après chaque passage dans le tableau, le plus grand élément non trié
+  est placé à sa position correcte à la fin du tableau
+\item
+  répéter le processus pour les autres éléments non triés.
+\end{enumerate}
+
+Le tri à bulles est stable et ne nécessite pas d'espace mémoire
+supplémentaire, mais sa complexité temporelle est de O(n²), ce qui n'est
+pas adapté aux grands ensembles de données.
+
+    FUNCTION bubbleSort(arr): n = LENGTH(arr) // Get the length of the array
+
+\begin{verbatim}
+WHILE n > 1 DO:
+    FOR i FROM 0 TO n - 2 DO:    // Iterate from the start to the second last element
+        IF arr[i] > arr[i + 1] THEN:
+            SWAP arr[i] WITH arr[i + 1] // Swap if the current element is greater than the next element
+    n = n - 1                    // Reduce the effective size of the array to be sorted
+\end{verbatim}
+
+END FUNCTION
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{98}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{bubbleSort}\PY{p}{(}\PY{n}{arr}\PY{p}{)}\PY{p}{:}
+    \PY{n}{n} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{arr}\PY{p}{)}
+    \PY{k}{while} \PY{n}{n} \PY{o}{\PYZgt{}} \PY{l+m+mi}{1}\PY{p}{:}
+        \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{n}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{n}{arr}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{\PYZgt{}} \PY{n}{arr}\PY{p}{[}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{:}
+                \PY{n}{arr}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,} \PY{n}{arr}\PY{p}{[}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{arr}\PY{p}{[}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{arr}\PY{p}{[}\PY{n}{i}\PY{p}{]}
+        \PY{n}{n} \PY{o}{\PYZhy{}}\PY{o}{=} \PY{l+m+mi}{1}
+
+\PY{n}{input\PYZus{}sizes} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{20001}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{execution\PYZus{}times} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{size} \PY{o+ow}{in} \PY{n}{input\PYZus{}sizes}\PY{p}{:}
+    \PY{n}{test\PYZus{}list} \PY{o}{=} \PY{n}{createRandomList}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{)}
+    \PY{n}{start\PYZus{}time} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+    \PY{n}{bubbleSort}\PY{p}{(}\PY{n}{test\PYZus{}list}\PY{p}{)}
+    \PY{n}{end\PYZus{}time} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+    \PY{n}{execution\PYZus{}times}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{end\PYZus{}time} \PY{o}{\PYZhy{}} \PY{n}{start\PYZus{}time}\PY{p}{)}
+
+
+\PY{c+c1}{\PYZsh{} Plot Measured Times and Complexities}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{input\PYZus{}sizes}\PY{p}{,} \PY{n}{execution\PYZus{}times}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Bubble Sort}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Customize Plot}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Time Complexity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Input Size (n)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Execution Time}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)} 
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_13_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Pour mon cinquième algorithme de tri, je vais choisir Heap Sort. Il
+s'agit d'un tri par comparaison basé sur la structure binaire du tas. Il
+peut être considéré comme une optimisation du tri par sélection, qui
+consiste à trouver l'élément maximal et à l'échanger avec le dernier,
+puis à répéter le processus pour les éléments restants. Dans le tri par
+tas, nous utilisons un tas binaire (arbre binaire) afin de pouvoir
+trouver et déplacer rapidement l'élément maximal en O(Log n) au lieu de
+O(n), ce qui permet d'obtenir une complexité temporelle de O(n Log n).
+
+Dans un tas binaire, la valeur de chaque nœud doit être inférieure ou
+égale à la valeur de ses nœuds fils. Le nœud ayant la plus petite valeur
+se trouve donc au sommet ou à la racine de l'arbre. Nous devrons donc
+créer une classe de tas binaire avec des méthodes
+d'insertion/suppression\ldots etch qui maintiennent les propriétés
+requises.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Traiter le tableau comme un arbre binaire complet
+\item
+  Construire un Max Heap
+\item
+  Trier le tableau en plaçant le plus grand élément à la fin du tableau
+  non trié.
+\end{enumerate}
+
+    FUNCTION heapify(arr, n, i): largest = i // Initialize largest as root l
+= 2 * i + 1 // Left child index r = 2 * i + 2 // Right child index
+
+\begin{verbatim}
+// If left child is larger than root
+IF l < n AND arr[l] > arr[largest] THEN:
+    largest = l                   // Update largest if left child is larger
+
+// If right child is larger than largest so far
+IF r < n AND arr[r] > arr[largest] THEN:
+    largest = r                   // Update largest if right child is larger
+
+// If largest is not root
+IF largest != i THEN:
+    SWAP arr[i] WITH arr[largest] // Swap the root with the largest child
+
+    // Recursively heapify the affected sub-tree
+    heapify(arr, n, largest)      // Call heapify on the affected subtree
+\end{verbatim}
+
+END FUNCTION
+
+// Main function to perform heap sort FUNCTION heapSort(arr): n =
+LENGTH(arr) // Get the length of the array
+
+\begin{verbatim}
+// Build heap (rearrange array)
+FOR i FROM n // 2 - 1 DOWNTO 0 DO:
+    heapify(arr, n, i)           // Build a max heap
+
+// One by one extract elements from heap
+FOR i FROM n - 1 DOWNTO 1 DO:
+    SWAP arr[0] WITH arr[i]      // Move root to end
+
+    // Call max heapify on the reduced heap
+    heapify(arr, i, 0)            // Heapify the root element
+\end{verbatim}
+
+END FUNCTION
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{99}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Python program for implementation of heap Sort}
+
+\PY{c+c1}{\PYZsh{} To heapify a subtree rooted with node i}
+\PY{c+c1}{\PYZsh{} which is an index in arr[].}
+\PY{k}{def} \PY{n+nf}{heapify}\PY{p}{(}\PY{n}{arr}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{i}\PY{p}{)}\PY{p}{:}
+    
+     \PY{c+c1}{\PYZsh{} Initialize largest as root}
+    \PY{n}{largest} \PY{o}{=} \PY{n}{i} 
+    
+    \PY{c+c1}{\PYZsh{}  left index = 2*i + 1}
+    \PY{n}{l} \PY{o}{=} \PY{l+m+mi}{2} \PY{o}{*} \PY{n}{i} \PY{o}{+} \PY{l+m+mi}{1} 
+    
+    \PY{c+c1}{\PYZsh{} right index = 2*i + 2}
+    \PY{n}{r} \PY{o}{=} \PY{l+m+mi}{2} \PY{o}{*} \PY{n}{i} \PY{o}{+} \PY{l+m+mi}{2}  
+
+    \PY{c+c1}{\PYZsh{} If left child is larger than root}
+    \PY{k}{if} \PY{n}{l} \PY{o}{\PYZlt{}} \PY{n}{n} \PY{o+ow}{and} \PY{n}{arr}\PY{p}{[}\PY{n}{l}\PY{p}{]} \PY{o}{\PYZgt{}} \PY{n}{arr}\PY{p}{[}\PY{n}{largest}\PY{p}{]}\PY{p}{:}
+        \PY{n}{largest} \PY{o}{=} \PY{n}{l}
+
+    \PY{c+c1}{\PYZsh{} If right child is larger than largest so far}
+    \PY{k}{if} \PY{n}{r} \PY{o}{\PYZlt{}} \PY{n}{n} \PY{o+ow}{and} \PY{n}{arr}\PY{p}{[}\PY{n}{r}\PY{p}{]} \PY{o}{\PYZgt{}} \PY{n}{arr}\PY{p}{[}\PY{n}{largest}\PY{p}{]}\PY{p}{:}
+        \PY{n}{largest} \PY{o}{=} \PY{n}{r}
+
+    \PY{c+c1}{\PYZsh{} If largest is not root}
+    \PY{k}{if} \PY{n}{largest} \PY{o}{!=} \PY{n}{i}\PY{p}{:}
+        \PY{n}{arr}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,} \PY{n}{arr}\PY{p}{[}\PY{n}{largest}\PY{p}{]} \PY{o}{=} \PY{n}{arr}\PY{p}{[}\PY{n}{largest}\PY{p}{]}\PY{p}{,} \PY{n}{arr}\PY{p}{[}\PY{n}{i}\PY{p}{]}  \PY{c+c1}{\PYZsh{} Swap}
+
+        \PY{c+c1}{\PYZsh{} Recursively heapify the affected sub\PYZhy{}tree}
+        \PY{n}{heapify}\PY{p}{(}\PY{n}{arr}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{largest}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Main function to do heap sort}
+\PY{k}{def} \PY{n+nf}{heapSort}\PY{p}{(}\PY{n}{arr}\PY{p}{)}\PY{p}{:}
+    
+    \PY{n}{n} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{arr}\PY{p}{)} 
+
+    \PY{c+c1}{\PYZsh{} Build heap (rearrange array)}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{n} \PY{o}{/}\PY{o}{/} \PY{l+m+mi}{2} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+        \PY{n}{heapify}\PY{p}{(}\PY{n}{arr}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{i}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} One by one extract an element from heap}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{n} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+      
+        \PY{c+c1}{\PYZsh{} Move root to end}
+        \PY{n}{arr}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{arr}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{arr}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,} \PY{n}{arr}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} 
+
+        \PY{c+c1}{\PYZsh{} Call max heapify on the reduced heap}
+        \PY{n}{heapify}\PY{p}{(}\PY{n}{arr}\PY{p}{,} \PY{n}{i}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}
+        
+\PY{n}{input\PYZus{}sizes} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{20001}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{execution\PYZus{}times} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{size} \PY{o+ow}{in} \PY{n}{input\PYZus{}sizes}\PY{p}{:}
+    \PY{n}{test\PYZus{}list} \PY{o}{=} \PY{n}{createRandomList}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{)}
+    \PY{n}{start\PYZus{}time} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+    \PY{n}{heapSort}\PY{p}{(}\PY{n}{test\PYZus{}list}\PY{p}{)}
+    \PY{n}{end\PYZus{}time} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+    \PY{n}{execution\PYZus{}times}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{end\PYZus{}time} \PY{o}{\PYZhy{}} \PY{n}{start\PYZus{}time}\PY{p}{)}
+
+
+\PY{c+c1}{\PYZsh{} Plot Measured Times and Complexities}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{input\PYZus{}sizes}\PY{p}{,} \PY{n}{execution\PYZus{}times}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Heap Sort}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Customize Plot}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Time Complexity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Input Size (n)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Execution Time}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)} 
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_16_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Essayons le tri par insertion qui fonctionne en insérant itérativement
+chaque élément d'une liste non triée à sa position correcte dans une
+partie triée de la liste. Il a donc une complexité temporelle moyenne de
+O(n²) et une complexité spatiale de O(1). Bien qu'il soit stable, il
+n'est pas efficace pour les grandes listes
+
+    FUNCTION insertionSort(arr): // Start from the second element (index 1)
+FOR i FROM 1 TO LENGTH(arr) - 1 DO: j = i // Set j to the current index
+
+\begin{verbatim}
+    // Move elements of arr[0..i-1], that are greater than arr[i],
+    // to one position ahead of their current position
+    WHILE j > 0 AND arr[j - 1] > arr[j] DO:
+        SWAP arr[j - 1] WITH arr[j] // Swap if the previous element is greater
+        j = j - 1                   // Move to the previous index
+\end{verbatim}
+
+END FUNCTION
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{100}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{insertionSort}\PY{p}{(}\PY{n}{arr}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{arr}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+        \PY{n}{j} \PY{o}{=} \PY{n}{i}
+        \PY{k}{while} \PY{n}{arr}\PY{p}{[}\PY{n}{j} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{\PYZgt{}} \PY{n}{arr}\PY{p}{[}\PY{n}{j}\PY{p}{]} \PY{o+ow}{and} \PY{n}{j} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{n}{arr}\PY{p}{[}\PY{n}{j}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{arr}\PY{p}{[}\PY{n}{j}\PY{p}{]} \PY{o}{=} \PY{n}{arr}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{,} \PY{n}{arr}\PY{p}{[}\PY{n}{j}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}
+            \PY{n}{j} \PY{o}{\PYZhy{}}\PY{o}{=} \PY{l+m+mi}{1}
+
+\PY{n}{input\PYZus{}sizes} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{20001}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{execution\PYZus{}times} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{size} \PY{o+ow}{in} \PY{n}{input\PYZus{}sizes}\PY{p}{:}
+    \PY{n}{test\PYZus{}list} \PY{o}{=} \PY{n}{createRandomList}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{)}
+    \PY{n}{start\PYZus{}time} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+    \PY{n}{insertionSort}\PY{p}{(}\PY{n}{test\PYZus{}list}\PY{p}{)}
+    \PY{n}{end\PYZus{}time} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+    \PY{n}{execution\PYZus{}times}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{end\PYZus{}time} \PY{o}{\PYZhy{}} \PY{n}{start\PYZus{}time}\PY{p}{)}
+
+
+\PY{c+c1}{\PYZsh{} Plot Measured Times and Complexities}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{input\PYZus{}sizes}\PY{p}{,} \PY{n}{execution\PYZus{}times}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Insertion Sort}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Customize Plot}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Time Complexity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Input Size (n)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Execution Time}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)} 
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_19_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    La méthode intégrée sort() utilisée en Java et Python est un algorithme
+de tri hybride dérivé du tri par fusion et du tri par insertion, appelé
+algorithme timsort. Dans toutes les données du monde réel, il y a
+probablement un segment du tableau qui est trié, Timsort exploite cela
+en recherchant des « Runs », c'est-à-dire ce que l'on appelle ces
+segments triés. Un autre terme clé est « Min Run », qui est la longueur
+minimale des Runs dans notre tableau. Timsort crée des parcours en
+utilisant le tri par insertion binaire sur les segments divisés du
+tableau. Sa complexité temporelle est de O(N LOG N).
+
+    FUNCTION insertion\_sort(arr, left = 0, right = None): IF right IS None
+THEN: right = LENGTH(arr) - 1 // Set right to the last index if not
+provided
+
+\begin{verbatim}
+// Iterate through the array, starting from the second element
+FOR i FROM left + 1 TO right DO:
+    key_item = arr[i]             // Select the current element
+    j = i - 1                      // Start comparing with the previous element
+
+    // Shift elements that are greater than key_item to the right
+    WHILE j >= left AND arr[j] > key_item DO:
+        arr[j + 1] = arr[j]       // Shift element to the next position
+        j = j - 1                  // Move to the previous element
+
+    arr[j + 1] = key_item          // Place key_item in its correct position
+
+RETURN arr                        // Return the sorted array
+\end{verbatim}
+
+FUNCTION merge(left, right): i, j = 0, 0 // Initialize indices for left
+and right arrays merged = {[}{]} // Initialize an empty array for merged
+results
+
+\begin{verbatim}
+WHILE i < LENGTH(left) AND j < LENGTH(right) DO:
+    IF left[i] < right[j] THEN:
+        merged.APPEND(left[i])   // Add smaller element to merged array
+        i = i + 1                 // Move to the next element in left
+    ELSE:
+        merged.APPEND(right[j])  // Add smaller element to merged array
+        j = j + 1                 // Move to the next element in right
+
+merged.EXTEND(left[i:])           // Add remaining elements from left array, if any
+merged.EXTEND(right[j:])          // Add remaining elements from right array, if any
+
+RETURN merged                     // Return the merged array
+\end{verbatim}
+
+FUNCTION tim\_sort(arr): min\_run = 32 // Initialize the minimum run
+size n = LENGTH(arr) // Find the length of the array
+
+\begin{verbatim}
+// Perform insertion sort on each segment of size min_run
+FOR i FROM 0 TO n WITH STEP min_run DO:
+    insertion_sort(arr, i, MIN(i + min_run - 1, n - 1)) // Sort each segment
+
+size = min_run                    // Start merging from size min_run
+WHILE size < n DO:
+    FOR start FROM 0 TO n WITH STEP size * 2 DO:
+        midpoint = start + size   // Calculate midpoint for merging
+        end = MIN(start + size * 2 - 1, n - 1) // Calculate end index
+
+        // Merge the two subarrays
+        merged_array = merge(arr[start:midpoint], arr[midpoint:end + 1])
+
+        // Assign the merged array back to original array
+        arr[start:start + LENGTH(merged_array)] = merged_array
+
+    size = size * 2               // Increase merge size for next iteration
+
+RETURN arr                        // Return the sorted array
+\end{verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{101}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{insertion\PYZus{}sort}\PY{p}{(}\PY{n}{arr}\PY{p}{,} \PY{n}{left}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{right}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} Base case: if the array is already sorted, do nothing}
+    \PY{k}{if} \PY{n}{right} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+        \PY{n}{right} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{arr}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}
+
+    \PY{c+c1}{\PYZsh{} Iterate through the array, starting from the second element}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{left} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{right} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} Select the current element}
+        \PY{n}{key\PYZus{}item} \PY{o}{=} \PY{n}{arr}\PY{p}{[}\PY{n}{i}\PY{p}{]}
+
+        \PY{c+c1}{\PYZsh{} Compare the current element with the previous one}
+        \PY{n}{j} \PY{o}{=} \PY{n}{i} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}
+
+        \PY{c+c1}{\PYZsh{} While the previous element is greater than the current one,}
+        \PY{c+c1}{\PYZsh{} shift the previous element to the next position}
+        \PY{k}{while} \PY{n}{j} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{left} \PY{o+ow}{and} \PY{n}{arr}\PY{p}{[}\PY{n}{j}\PY{p}{]} \PY{o}{\PYZgt{}} \PY{n}{key\PYZus{}item}\PY{p}{:}
+            \PY{n}{arr}\PY{p}{[}\PY{n}{j} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{arr}\PY{p}{[}\PY{n}{j}\PY{p}{]}
+            \PY{n}{j} \PY{o}{\PYZhy{}}\PY{o}{=} \PY{l+m+mi}{1}
+
+        \PY{c+c1}{\PYZsh{} Once the loop ends, the previous element is less than or equal to}
+        \PY{c+c1}{\PYZsh{} the current element, so place the current element after it}
+        \PY{n}{arr}\PY{p}{[}\PY{n}{j} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{key\PYZus{}item}
+
+    \PY{k}{return} \PY{n}{arr}
+
+
+\PY{k}{def} \PY{n+nf}{merge}\PY{p}{(}\PY{n}{left}\PY{p}{,} \PY{n}{right}\PY{p}{)}\PY{p}{:}
+    \PY{n}{i}\PY{p}{,} \PY{n}{j} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}
+    \PY{n}{merged} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+    \PY{k}{while} \PY{n}{i} \PY{o}{\PYZlt{}} \PY{n+nb}{len}\PY{p}{(}\PY{n}{left}\PY{p}{)} \PY{o+ow}{and} \PY{n}{j} \PY{o}{\PYZlt{}} \PY{n+nb}{len}\PY{p}{(}\PY{n}{right}\PY{p}{)}\PY{p}{:}
+        \PY{k}{if} \PY{n}{left}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{\PYZlt{}} \PY{n}{right}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{:}
+            \PY{n}{merged}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{left}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}
+            \PY{n}{i} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{merged}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{right}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{)}
+            \PY{n}{j} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+
+    \PY{n}{merged}\PY{o}{.}\PY{n}{extend}\PY{p}{(}\PY{n}{left}\PY{p}{[}\PY{n}{i}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+    \PY{n}{merged}\PY{o}{.}\PY{n}{extend}\PY{p}{(}\PY{n}{right}\PY{p}{[}\PY{n}{j}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{merged}
+
+
+\PY{k}{def} \PY{n+nf}{tim\PYZus{}sort}\PY{p}{(}\PY{n}{arr}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} Initialize the minimum run size}
+    \PY{n}{min\PYZus{}run} \PY{o}{=} \PY{l+m+mi}{32}
+
+    \PY{c+c1}{\PYZsh{} Find the length of the array}
+    \PY{n}{n} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{arr}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Traverse the array and do insertion sort on each segment of size min\PYZus{}run}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{min\PYZus{}run}\PY{p}{)}\PY{p}{:}
+        \PY{n}{insertion\PYZus{}sort}\PY{p}{(}\PY{n}{arr}\PY{p}{,} \PY{n}{i}\PY{p}{,} \PY{n+nb}{min}\PY{p}{(}\PY{n}{i} \PY{o}{+} \PY{n}{min\PYZus{}run} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{,} \PY{p}{(}\PY{n}{n} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Start merging from size 32 (or min\PYZus{}run)}
+    \PY{n}{size} \PY{o}{=} \PY{n}{min\PYZus{}run}
+    \PY{k}{while} \PY{n}{size} \PY{o}{\PYZlt{}} \PY{n}{n}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} Divide the array into merge\PYZus{}size}
+        \PY{k}{for} \PY{n}{start} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{size} \PY{o}{*} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} Find the midpoint and endpoint of the left and right subarrays}
+            \PY{n}{midpoint} \PY{o}{=} \PY{n}{start} \PY{o}{+} \PY{n}{size}
+            \PY{n}{end} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{p}{(}\PY{n}{start} \PY{o}{+} \PY{n}{size} \PY{o}{*} \PY{l+m+mi}{2} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{n}{n} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} Merge the two subarrays}
+            \PY{n}{merged\PYZus{}array} \PY{o}{=} \PY{n}{merge}\PY{p}{(}\PY{n}{arr}\PY{p}{[}\PY{n}{start}\PY{p}{:}\PY{n}{midpoint}\PY{p}{]}\PY{p}{,} \PY{n}{arr}\PY{p}{[}\PY{n}{midpoint}\PY{p}{:}\PY{n}{end} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} Assign the merged array to the original array}
+            \PY{n}{arr}\PY{p}{[}\PY{n}{start}\PY{p}{:}\PY{n}{start} \PY{o}{+} \PY{n+nb}{len}\PY{p}{(}\PY{n}{merged\PYZus{}array}\PY{p}{)}\PY{p}{]} \PY{o}{=} \PY{n}{merged\PYZus{}array}
+
+        \PY{c+c1}{\PYZsh{} Increase the merge size for the next iteration}
+        \PY{n}{size} \PY{o}{*}\PY{o}{=} \PY{l+m+mi}{2}
+
+    \PY{k}{return} \PY{n}{arr}
+
+\PY{n}{input\PYZus{}sizes} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{20001}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{execution\PYZus{}times} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{size} \PY{o+ow}{in} \PY{n}{input\PYZus{}sizes}\PY{p}{:}
+    \PY{n}{test\PYZus{}list} \PY{o}{=} \PY{n}{createRandomList}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{)}
+    \PY{n}{start\PYZus{}time} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+    \PY{n}{tim\PYZus{}sort}\PY{p}{(}\PY{n}{test\PYZus{}list}\PY{p}{)}
+    \PY{n}{end\PYZus{}time} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+    \PY{n}{execution\PYZus{}times}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{end\PYZus{}time} \PY{o}{\PYZhy{}} \PY{n}{start\PYZus{}time}\PY{p}{)}
+
+
+\PY{c+c1}{\PYZsh{} Plot Measured Times and Complexities}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{input\PYZus{}sizes}\PY{p}{,} \PY{n}{execution\PYZus{}times}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TimSort}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Customize Plot}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Time Complexity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Input Size (n)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Execution Time}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)} 
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_22_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
